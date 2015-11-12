@@ -1,0 +1,47 @@
+{
+  "author": {
+    "name": "Alvaro Juste"
+  },
+  "description": "jaune-engine",
+  "dependencies": {
+    "co": "^4.6.0",
+    "express": "=3.4.x",
+    "gm": "=1.9.x",
+    "i18next": "=1.7.x",
+    "iconv": "=2.1.x",
+    "jaune-engine": "git+https://github.com/ajuste/jaune-engine.git#master",
+    "jaune-env": "git+https://github.com/ajuste/jaune-env.git#master",
+    "jaune-fs": "git+https://github.com/ajuste/jaune-fs.git#master",
+    "jaune-util": "git+https://github.com/ajuste/jaune-util.git#master",
+    "koa": "^1.1.2",
+    "koa-body": "^1.2.1",
+    "koa-i18n": "^1.1.0",
+    "koa-jade": "^1.1.0",
+    "koa-locale": "^1.0.0",
+    "koa-logger": "^1.3.0",
+    "koa-routing": "^1.3.1",
+    "koa-send": "^1.3.1",
+    "koa-session": "^3.3.1",
+    "lodash": "^3.10.1",
+    "node-uuid": "=1.4.x",
+    "q": "^1.2.1",
+    "request": "=2.33.x",
+    "string": "=1.5.x"
+  },
+  "devDependencies": {},
+  "main": "index.js",
+  "name": "jaune-engine",
+  "repository": {
+    "type": "git",
+    "url": "ajuste/jaune-engine.git"
+  },
+  "version": "0.0.4",
+  "_id": "jaune-engine@0.0.4",
+  "directories": {
+    "directories.lib": "lib"
+  },
+  "engine": "node >= 0.10.x",
+  "scripts": {
+    "test": "mocha ./test/*"
+  }
+}
