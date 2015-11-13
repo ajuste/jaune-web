@@ -2,7 +2,7 @@
   "author": {
     "name": "Alvaro Juste"
   },
-  "description": "jaune-engine",
+  "description": "jaune-web",
   "dependencies": {
     "co": "^4.6.0",
     "express": "=3.4.x",
@@ -30,13 +30,13 @@
   },
   "devDependencies": {},
   "main": "index.js",
-  "name": "jaune-engine",
+  "name": "jaune-web",
   "repository": {
     "type": "git",
-    "url": "ajuste/jaune-engine.git"
+    "url": "ajuste/jaune-web.git"
   },
-  "version": "0.0.4",
-  "_id": "jaune-engine@0.0.4",
+  "version": "1.0.0",
+  "_id": "jaune-web@1.0.0",
   "directories": {
     "directories.lib": "lib"
   },
