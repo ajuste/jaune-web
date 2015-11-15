@@ -26,7 +26,7 @@ module.exports = {
 
     // localization namespace
     _extend(instance, { Locale : _localization });
-    _extend(instance, { Locale : { Manager : _localization.Manager(env) }});
+    _extend(instance, { Locale : { Manager : new _localization.Manager(env) }});
 
     // http namespace
     const _httpUtil     = new _http.Util();
