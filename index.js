@@ -7,7 +7,6 @@ const _extend       = require("lodash").extend;
 // jaune
 const _createEngine = require("jaune-engine").create;
 const _contex       = require("./lib/context");
-const _responders   = require("./lib/responders");
 const _localization = require("./lib/localization");
 const _http         = require("./lib/http");
 const _server       = require("./lib/server");
@@ -39,9 +38,6 @@ module.exports = {
       Encoding: _httpEncoding,
       Cache: _httpCache
     }});
-
-    // responders namespace
-    _extend(instance, { Responders : _responders });
 
     // app namespace
     const _app = new _server.App(env, instance);
