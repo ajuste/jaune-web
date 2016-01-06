@@ -1,7 +1,5 @@
 {
-  "author": {
-    "name": "Alvaro Juste"
-  },
+  "author": "Alvaro Juste <juste.alvaro@gmail.com>",
   "description": "jaune-web",
   "dependencies": {
     "co": "^4.6.0",
@@ -9,10 +7,10 @@
     "gm": "=1.9.x",
     "i18next": "=1.7.x",
     "iconv": "=2.1.x",
-    "jaune-engine": "git+https://github.com/ajuste/jaune-engine.git#master",
-    "jaune-env": "git+https://github.com/ajuste/jaune-env.git#master",
-    "jaune-fs": "git+https://github.com/ajuste/jaune-fs.git#master",
-    "jaune-util": "git+https://github.com/ajuste/jaune-util.git#master",
+    "jaune-engine": "=0.0.x",
+    "jaune-env": "=0.0.x",
+    "jaune-fs": "=0.0.x",
+    "jaune-util": "=0.0.x",
     "koa": "^1.1.2",
     "koa-body": "^1.2.1",
     "koa-i18n": "^1.1.0",
@@ -35,12 +33,12 @@
     "type": "git",
     "url": "ajuste/jaune-web.git"
   },
-  "version": "1.0.0",
-  "_id": "jaune-web@1.0.0",
+  "version": "0.0.1",
+  "_id": "jaune-web@0.0.1",
   "directories": {
     "directories.lib": "lib"
   },
-  "engine": "node >= 0.10.x",
+  "engine": "node >= 0.12.x",
   "scripts": {
     "test": "mocha ./test/*"
   }
