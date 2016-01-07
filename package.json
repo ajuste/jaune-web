@@ -31,15 +31,27 @@
   "name": "jaune-web",
   "repository": {
     "type": "git",
-    "url": "ajuste/jaune-web.git"
+    "url": "git+https://github.com/ajuste/jaune-web.git"
   },
   "version": "0.0.1",
-  "_id": "jaune-web@0.0.1",
   "directories": {
-    "directories.lib": "lib"
+    "test": "test"
   },
   "engine": "node >= 0.12.x",
   "scripts": {
     "test": "mocha ./test/*"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/ajuste/jaune-web/issues"
+  },
+  "homepage": "https://github.com/ajuste/jaune-web#readme",
+  "keywords": [
+    "web",
+    "jaune",
+    "framework",
+    "koa",
+    "server",
+    "node"
+  ],
+  "license": "ISC"
 }
