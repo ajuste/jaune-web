@@ -2,6 +2,8 @@
   "author": "Alvaro Juste <juste.alvaro@gmail.com>",
   "description": "jaune-web",
   "dependencies": {
+    "browserify": "^13.0.0",
+    "chokidar": "^1.4.2",
     "co": "^4.6.0",
     "express": "=3.4.x",
     "gm": "=1.9.x",
@@ -33,7 +35,7 @@
     "type": "git",
     "url": "git+https://github.com/ajuste/jaune-web.git"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "directories": {
     "test": "test"
   },
