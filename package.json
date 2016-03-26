@@ -20,7 +20,9 @@
     "lodash": "^3.10.1",
     "q": "^1.2.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "coffee-script": "^1.10.0"
+  },
   "main": "index.js",
   "name": "jaune-web",
   "repository": {
