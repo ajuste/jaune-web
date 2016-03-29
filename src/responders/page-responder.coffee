@@ -18,7 +18,7 @@ resolveLocalization = (page, settings, data) ->
   localeManager = @jaune.engine().Locale.Manager;
   localizations = export: {}
   {localization} = settings
-  {pageLocalization} = page
+  pageLocalization = page.localization
 
   return localizations unless localization?
 
