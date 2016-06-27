@@ -79,9 +79,9 @@ class KoaServer
 
     @app.use register.coreMiddleware @app, @engine
 
-    return unless @initSettings?.init?.middlewares?
+    return unless @initSettings?.middlewares?
 
-    @initSettings.init.middlewares @app, @engine
+    @initSettings.middlewares @app, @engine
 
   ###*
    * @function Set up body parse
