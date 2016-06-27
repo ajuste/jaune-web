@@ -33,13 +33,13 @@ class KoaServer
 
   constructor: (@env, @engine) ->
 
-  @httpSettings   = @env.getEnvProperty ConfigHttpSection
-  @initSettings   = @env.getEnvProperty ConfigInitSection
-  @localeSettings = @env.getEnvProperty ConfigLocaleSection
-  @errorSettings  = @env.getEnvProperty ConfigErrorSection
+    @httpSettings   = @env.getEnvProperty ConfigHttpSection
+    @initSettings   = @env.getEnvProperty ConfigInitSection
+    @localeSettings = @env.getEnvProperty ConfigLocaleSection
+    @errorSettings  = @env.getEnvProperty ConfigErrorSection
 
-  @app = koa();
-  @setup();
+    @app = koa();
+    @setup();
 
   ###*
    * @function Set up session
