@@ -195,14 +195,6 @@ class KoaServer
 
         yield handleError this, err
 
-      switch ctx.accepts 'html', 'json'
-
-        when 'json' then yield ctx.jaune.responder.json.sendError err
-
-        when 'html' then yield ctx.jaune.responder.page.sendError err
-
-        else yield ctx.jaune.responder.http.error err
-
   ###*
    * @function Sets up modules to be used by the server.
   ###
@@ -234,5 +226,13 @@ handleError = (ctx, err, self) ->
         .replace /^Object.<anonymous>\s*\(/gm, '{anonymous}()@'
         .split '\n'
       console.log stack
+
+  switch ctx.accepts 'html', 'json'
+
+    when 'json' then yield ctx.jaune.responder.json.sendError err
+
+    when 'html' then yield ctx.jaune.responder.page.sendError err
+
+    else yield ctx.jaune.responder.http.error err
 
 module.exports = App: KoaServer
