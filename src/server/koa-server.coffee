@@ -97,7 +97,7 @@ class KoaServer
   ###
   setupBody: ->
 
-    {parse, multipart, strict, uploadPath} = @httpSettings.body if httpSettings?.body?
+    {parse, multipart, strict, uploadPath} = @httpSettings.body if @httpSettings?.body?
 
     return unless parse
 
