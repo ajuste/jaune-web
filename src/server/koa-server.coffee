@@ -202,7 +202,7 @@ class KoaServer
       catch err
 
         return if customErrorHandling? and
-          (yield customErrorHandling err, this, @session)
+          yield customErrorHandling err, ctx
 
         yield handleError ctx, err
 
