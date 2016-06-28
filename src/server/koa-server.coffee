@@ -84,6 +84,15 @@ class KoaServer
     @initSettings.middlewares @app, @engine
 
   ###*
+   * @function Set up post middlewares
+  ###
+  setupPostMiddlewares: ->
+
+    return unless @initSettings?.postMiddlewares?
+
+    @initSettings.postMiddlewares @app, @engine
+
+  ###*
    * @function Set up body parse
   ###
   setupBody: ->
@@ -202,16 +211,17 @@ class KoaServer
 
     @app.keys = ["some secret hurr"] # TODO: make it configurable
 
-    @extendNamespace();
-    @setupErrorHandling();
-    @setupMiddlewares();
-    @setupLogger();
-    @setupSession();
-    @setupI18n();
-    @setupBody();
-    @setupWeb();
-    @setupRouting();
-    @setupStatic();
+    @extendNamespace()
+    @setupErrorHandling()
+    @setupMiddlewares()
+    @setupLogger()
+    @setupSession()
+    @setupI18n()
+    @setupBody()
+    @setupWeb()
+    @setupPostMiddlewares()
+    @setupRouting()
+    @setupStatic()
     @app.use register.respondersMiddleware @app, @engine
     @initDaemons @app, @engine
 
