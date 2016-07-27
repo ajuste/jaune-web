@@ -11,6 +11,8 @@ lodash = require 'lodash'
 {extend} = lodash
 I18n = require 'i18next'
 koa = require 'koa'
+http = require 'http'
+https = require 'https'
 
 # jaune
 {evaluateName} = require('jaune-util').Reflection
@@ -113,18 +115,23 @@ class KoaServer
   ###
   setupWeb: ->
 
-    {enabled, port, html} = @httpSettings.web if @httpSettings?.web?
+    {enabled, port, html, https} = @httpSettings.web if @httpSettings?.web?
+    opts = {}
+
+    if https?
+      {key, cert} = https
+      opts = extend opts, {key, cert}
 
     return unless enabled
 
-    http = require 'http'
-    port = parseInt port ? 3000, 10
     appName = @env.getEnvProperty AppName
+    httpServer = if https then https else http
+    port = parseInt port ? 3000, 10
 
     if html?
       @app.use evaluateName html.engine, html.args, html.context, {@app}
 
-    http.createServer(@app.callback()).listen port, ->
+    httpServer.createServer(opts, @app.callback()).listen port, ->
       console.log "#{appName} web server started"
 
   ###*
@@ -192,19 +199,18 @@ class KoaServer
   setupErrorHandling: ->
 
     customErrorHandling = @errorSettings?.listener
-    ctx = this
 
-    @app.use (next) =>
+    @app.use (next) ->
 
       try
         yield next;
 
-      catch err
+      catch error
 
         return if customErrorHandling? and
-          yield customErrorHandling err, ctx
+          yield customErrorHandling error, this
 
-        yield handleError ctx, err
+        yield handleError this, error
 
   ###*
    * @function Sets up modules to be used by the server.
