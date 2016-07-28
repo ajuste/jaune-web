@@ -1,3 +1,1 @@
-extend = require 'lodash'
-
-module.exports = extend {}, require './locale'
+module.exports = require './locale'

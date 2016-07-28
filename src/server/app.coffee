@@ -9,7 +9,7 @@
 {defaults}  = require 'lodash'
 
 # Koa server
-{App} = require './koa-server'
+KoaApp = require('./koa-server').App
 
 # Attribute name for process describing type of environment
 EnvType = 'type'
@@ -67,7 +67,7 @@ class App
   ###
   startServer: ->
     throw new Erro 'Already started' if (@server)
-    @server = new App @env, @engine
+    @server = new KoaApp @env, @engine
 
   ###*
    * @function Unload application

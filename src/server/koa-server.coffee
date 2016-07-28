@@ -117,21 +117,24 @@ class KoaServer
     {enabled, port, html, https} = @httpSettings.web if @httpSettings?.web?
     opts = {}
 
-    if https?
-      {key, cert} = https
-      opts = extend opts, {key, cert}
-
     return unless enabled
 
+    {engine, args, context} = html if html?
     appName = @env.getEnvProperty AppName
     httpServer = if https then https else http
     port = parseInt port ? 3000, 10
 
     if html?
-      @app.use evaluateName html.engine, html.args, html.context, {@app}
+      @app.use evaluateName engine, args, context, {@app}
 
-    httpServer.createServer(opts, @app.callback()).listen port, ->
-      console.log "#{appName} web server started"
+    if https?
+      {key, cert} = https
+      opts = extend opts, {key, cert}
+      httpServer.createServer(opts, @app.callback()).listen port, ->
+        console.log "#{appName} web server started"
+    else
+      httpServer.createServer(@app.callback()).listen port, ->
+        console.log "#{appName} web server started"
 
   ###*
    * @function Set up internazionalization

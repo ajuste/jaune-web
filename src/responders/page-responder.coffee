@@ -65,7 +65,7 @@ resolveLocalization = (page, settings, data) ->
   if keys?
     clientLoc.push(
       for key of pageLocalization.keys
-        {key, value : localeManager.getStringResource page.localization.keys[key], true}
+        {key, value : localeManager.getStringResource page.localization.keys[key] + '1', true}
     )
 
   switch format

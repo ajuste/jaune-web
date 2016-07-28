@@ -146,4 +146,4 @@ class Manager
       folder : i18n.detectLanguage()
     }
 
-module.exports = Manager: LocaleManager
+module.exports = {Manager}
