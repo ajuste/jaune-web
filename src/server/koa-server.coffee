@@ -198,6 +198,7 @@ class KoaServer
   setupErrorHandling: ->
 
     customErrorHandling = @errorSettings?.listener
+    env = @env
 
     @app.use (next) ->
 
@@ -209,7 +210,7 @@ class KoaServer
         return if customErrorHandling? and
           yield customErrorHandling error, this
 
-        yield handleError this, error
+        yield handleError this, env, error
 
   ###*
    * @function Sets up modules to be used by the server.
@@ -219,8 +220,8 @@ class KoaServer
     @app.keys = ["some secret hurr"] # TODO: make it configurable
 
     @extendNamespace()
-    @setupErrorHandling()
     @setupMiddlewares()
+    @setupErrorHandling()
     @setupLogger()
     @setupSession()
     @setupI18n()
@@ -232,8 +233,8 @@ class KoaServer
     @app.use register.respondersMiddleware @app, @engine
     @initDaemons @app, @engine
 
-handleError = (ctx, err) ->
-  if ctx.env.getProcessProperty(EnvType) is EnvTypeDev
+handleError = (ctx, env, err) ->
+  if env.getProcessProperty(EnvType) is EnvTypeDev
     console.log err
     if err.stack
       stack = err
