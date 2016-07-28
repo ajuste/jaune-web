@@ -11,7 +11,7 @@ lodash = require 'lodash'
 I18n = require 'i18next'
 koa = require 'koa'
 http = require 'http'
-https = require 'https'
+Https = require 'https'
 
 # jaune
 {evaluateName} = require('jaune-util').Reflection
@@ -115,13 +115,11 @@ class KoaServer
   setupWeb: ->
 
     {enabled, port, html, https} = @httpSettings.web if @httpSettings?.web?
-    opts = {}
 
     return unless enabled
 
     {engine, args, context} = html if html?
     appName = @env.getEnvProperty AppName
-    httpServer = if https then https else http
     port = parseInt port ? 3000, 10
 
     if html?
@@ -129,11 +127,10 @@ class KoaServer
 
     if https?
       {key, cert} = https
-      opts = extend opts, {key, cert}
-      httpServer.createServer(opts, @app.callback()).listen port, ->
+      Https.createServer({key, cert}, @app.callback()).listen port, ->
         console.log "#{appName} web server started"
     else
-      httpServer.createServer(@app.callback()).listen port, ->
+      http.createServer(@app.callback()).listen port, ->
         console.log "#{appName} web server started"
 
   ###*

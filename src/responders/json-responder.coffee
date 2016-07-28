@@ -52,7 +52,7 @@ sendData = (opts = {}) ->
 ###
 sendError = (err) ->
 
-  engine = @engine()
+  engine = @jaune.engine()
   isArgumentError = err instanceof engine.Error.ArgumentError
   isCodedError = err instanceof engine.Error.UnhandledError
   util = engine.Http.Util;
