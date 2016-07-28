@@ -2,16 +2,44 @@
 * @file   Source code for Json Responder
 * @author Alvaro Juste
 ###
-
-"use strict"
+'use strict'
 
 # 3rd
-{bind, isObject, isNumber, extend, chain, has, defaultsDeep, chunk} = require 'lodash'
+lodash = require 'lodash'
+{bind} = lodash
+{isObject} = lodash
+{isNumber} = lodash
+{extend} = lodash
+{has} = lodash
+{defaultsDeep} = lodash
+{chunk} = lodash
 
-# jaune
-PAGES_CONFIG_SECTION = 'jaune.pages'
-GENERIC_PAGE_404     = 'notFound'
-GENERIC_PAGE_500     = 'error'
+# Configuration section for pages
+PagesConfigSection = 'jaune.pages'
+
+# Generic error for 404
+GenericPage404     = 'notFound'
+
+# Generic error for 500
+GenericPage500     = 'error'
+
+getDefaultLocalization = (page, settings, localeManager)->
+
+  {localization} = settings
+
+  return unless page.default and has settings, 'localization.defaults'
+
+  for key of page.defaults
+
+    continue unless localization.defaults[key]?
+
+    setting = localization.defaults[key]
+
+    if isObject settings
+      {key, value} = setting
+      {key, value: localeManager.getStringResource value, true}
+    else
+      key: setting, value: localeManager.getStringResource setting, true
 
 resolveLocalization = (page, settings, data) ->
 
@@ -25,44 +53,28 @@ resolveLocalization = (page, settings, data) ->
   # client localization
   clientLoc = localizations[localization.property] = localizations.export[localization.property] = []
   format  = settings.localization.format ? 'array'
+  {keys, title} = pageLocalization if pageLocalization?
 
   # add default values
-  if page.defaults and has settings, "localization.defaults"
-    chain   (page.defaults)
-    .filter ((key) -> settings.localization.defaults[key]?)
-    .map    ((key) ->
-
-      setting = localization.defaults[key]
-
-      if isObject settings
-        {key, value} = setting
-        {key, value: localeManager.getStringResource value, true}
-      else
-        key: setting, value: localeManager.getStringResource setting, true
-    )
-    .each   ((val) -> clientLoc.push val)
-    .value()
+  clientLoc.concat getDefaultLocalization page, settings, localeManager
 
   # add page's specific localization
-  if pageLocalization?
-    if pageLocalization.title?
-      localizations.title = localeManager.getStringResource pageLocalization.title
+  if title?
+    localizations.title = localeManager.getStringResource pageLocalization.title
 
-    if pageLocalization.keys?
-      chain (pageLocalization.keys)
-      .keys()
-      .map  ((key) -> {key, value : localeManager.getStringResource page.localization.keys[key], true})
-      .each ((val) -> clientLoc.push val)
-      .value()
+  if keys?
+    clientLoc.push(
+      for key of pageLocalization.keys
+        {key, value : localeManager.getStringResource page.localization.keys[key], true}
+    )
 
   switch format
 
     when 'object'
 
-      localizations[localization.property] = localizations.export[localization.property] = chain(clientLoc)
-      .map((e) -> [e.key, e.value])
-      .object()
-      .value()
+      result = {}
+      result[key] = value for {key, value} in clientLoc
+      localizations[localization.property] = localizations.export[localization.property] = result
 
   localizations
 
@@ -98,7 +110,7 @@ resolvePageData = (page, settings, data) ->
 ###
 send = (name, opts) ->
 
-  settings = @jaune.engine().Environment.getEnvProperty PAGES_CONFIG_SECTION
+  settings = @jaune.engine().Environment.getEnvProperty PagesConfigSection
   page = settings?.definitions[name]
 
   throw new Error "Page not defined: #{name}" unless page?
@@ -109,16 +121,16 @@ send = (name, opts) ->
 * @function Respond with not found
 ###
 sendNotFound = (opts) ->
-  yield render(this, getGenericPageSettings(this, GENERIC_PAGE_404), opts?.result)
+  yield render(this, getGenericPageSettings(this, GenericPage404), opts?.result)
 
 ###*
 * @function Respond with error
 ###
 sendError = (err, message) ->
-  yield render(this, getGenericPageSettings(this, GENERIC_PAGE_500), {message, err});
+  yield render(this, getGenericPageSettings(this, GenericPage500), {message, err});
 
 getGenericPageSettings = (ctx, name) ->
-  settings = ctx.jaune.engine().Environment.getEnvProperty PAGES_CONFIG_SECTION
+  settings = ctx.jaune.engine().Environment.getEnvProperty PagesConfigSection
   settings?.definitions?.generic?[name]
 
 render = (ctx, page, data) ->
@@ -127,7 +139,7 @@ render = (ctx, page, data) ->
 
   return httpResponder.notFound.call ctx unless page
 
-  settings = ctx.jaune.engine().Environment.getEnvProperty PAGES_CONFIG_SECTION
+  settings = ctx.jaune.engine().Environment.getEnvProperty PagesConfigSection
   data = data ? ctx.jaune.data() ? ''
 
   if ctx.render.constructor.name is 'GeneratorFunction'
@@ -136,6 +148,6 @@ render = (ctx, page, data) ->
     ctx.render page.view, resolvePageData.call(ctx, page, settings, data)
 
 module.exports = (context) ->
-  send        : bind send, context
+  send: bind send, context
   sendNotFound: bind sendNotFound, context
-  sendError   : bind sendError, context
+  sendError: bind sendError, context

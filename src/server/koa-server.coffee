@@ -7,7 +7,6 @@
 
 # 3rd
 lodash = require 'lodash'
-{pick} = lodash
 {extend} = lodash
 I18n = require 'i18next'
 koa = require 'koa'
