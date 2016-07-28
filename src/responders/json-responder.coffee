@@ -45,6 +45,7 @@ sendData = (opts = {}) ->
   # check if NotFound must be sent on no data
   return http.notFound.call this if opts.sendNotFoundOnNoData is yes and not dataAvailable
   @body = data
+  yield {}
 
 ###*
  * @function Respond with an error
