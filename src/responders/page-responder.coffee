@@ -92,6 +92,7 @@ splitIntoChunks = (chunkSize, data = export: {}) ->
 resolvePageData = (page, settings, data) ->
 
   {splitDataIntoChunks} = settings
+  data = extend data ? {}, @_jaune_web_responder_global if @_jaune_web_responder_global?
 
   # localization
   defaultsDeep data, resolveLocalization.call(this, page, settings)
@@ -133,6 +134,15 @@ getGenericPageSettings = (ctx, name) ->
   settings = ctx.jaune.engine().Environment.getEnvProperty PagesConfigSection
   settings?.definitions?.generic?[name]
 
+###*
+* @function Adds data that will be used in page responder to render the page
+* @param {Object} ctx Context object
+* @param {Object} data Data that extends global
+###
+extendGlobalData = (data) ->
+  return unless data?
+  @_jaune_web_responder_global = extend @_jaune_web_responder_global ? {}, data
+
 render = (ctx, page, data) ->
 
   httpResponder = ctx.jaune.responder.http;
@@ -151,3 +161,4 @@ module.exports = (context) ->
   send: bind send, context
   sendNotFound: bind sendNotFound, context
   sendError: bind sendError, context
+  extendGlobalData: bind extendGlobalData, context
