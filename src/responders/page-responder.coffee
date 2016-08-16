@@ -27,19 +27,17 @@ getDefaultLocalization = (page, settings, localeManager)->
 
   {localization} = settings
 
-  return unless page.default and has settings, 'localization.defaults'
+  return unless page.defaults and settings?.localization?.defaults?
 
-  for key of page.defaults
+  for key in page.defaults
 
-    continue unless localization.defaults[key]?
-
-    setting = localization.defaults[key]
+    continue unless (setting = localization.defaults[key])?
 
     if isObject settings
       {key, value} = setting
-      {key, value: localeManager.getStringResource value, true}
+      {key, value: localeManager.getStringResource value, yes}
     else
-      key: setting, value: localeManager.getStringResource setting, true
+      key: setting, value: localeManager.getStringResource setting, yes
 
 resolveLocalization = (page, settings, data) ->
 
@@ -51,22 +49,20 @@ resolveLocalization = (page, settings, data) ->
   return localizations unless localization?
 
   # client localization
-  clientLoc = localizations[localization.property] = localizations.export[localization.property] = []
   format  = settings.localization.format ? 'array'
   {keys, title} = pageLocalization if pageLocalization?
 
+  debugger
+
   # add default values
-  clientLoc.concat getDefaultLocalization page, settings, localeManager
+  clientLoc = getDefaultLocalization page, settings, localeManager
 
   # add page's specific localization
-  if title?
-    localizations.title = localeManager.getStringResource pageLocalization.title
+  localizations.title = localeManager.getStringResource pageLocalization.title if title?
 
   if keys?
-    clientLoc.push(
-      for key of pageLocalization.keys
-        {key, value : localeManager.getStringResource page.localization.keys[key] + '1', true}
-    )
+    for key of pageLocalization.keys
+      clientLoc.push {key, value : localeManager.getStringResource page.localization.keys[key], true}
 
   switch format
 
@@ -75,6 +71,10 @@ resolveLocalization = (page, settings, data) ->
       result = {}
       result[key] = value for {key, value} in clientLoc
       localizations[localization.property] = localizations.export[localization.property] = result
+
+    else
+
+      localizations[localization.property] = localizations.export[localization.property] = localizations
 
   localizations
 
@@ -104,7 +104,7 @@ resolvePageData = (page, settings, data) ->
   data
 
 ###*
-* @function Respond with JSON response
+* @function Respond with page response
 * @param    {*} [result.data] Data to be sent to client
 * @param    {Number} [result.securityCheck] Security check for request
 * @param    {Boolean} [opts.sendNotFoundOnNoData] Sends 404 on no data
