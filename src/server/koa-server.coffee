@@ -190,7 +190,7 @@ class KoaServer
   ###
   extendNamespace: ->
     return unless @initSettings?.extendNamespace?
-    @initSettings.extendNamespace()
+    @initSettings.extendNamespace @engine
 
   ###*
    * @function Sets up error handling
