@@ -110,28 +110,49 @@ class KoaServer
     @app.use koaBody settings
 
   ###*
+   * @function Set up sockets
+  ###
+  setupSockets: ->
+
+    {sockets} = @httpSettings if @httpSettings?
+
+    return unless sockets
+
+    @engine.sockets = new (require('koa-socket'))() #needs to be installed by client
+    @engine.sockets.attach @app
+
+  ###*
    * @function Set up web serving
   ###
   setupWeb: ->
 
-    {enabled, port, html, https} = @httpSettings.web if @httpSettings?.web?
+    {enabled, html, https} = @httpSettings.web if @httpSettings?.web?
 
     return unless enabled
 
     {engine, args, context} = html if html?
-    appName = @env.getEnvProperty AppName
-    port = parseInt port ? 3000, 10
 
     if html?
       @app.use evaluateName engine, args, context, {@app}
 
+  ###*
+   * @function Set up http serving
+  ###
+  setupHttp: ->
+
+    return unless @httpSettings?
+
+    {port, https} = @httpSettings
+    appName = @env.getEnvProperty AppName
+    port = parseInt port ? 3000, 10
+
     if https?
       {key, cert} = https
-      Https.createServer({key, cert}, @app.callback()).listen port, ->
-        console.log "#{appName} web server started"
+      @app.server = Https.createServer {key, cert}, @app.callback()
     else
-      http.createServer(@app.callback()).listen port, ->
-        console.log "#{appName} web server started"
+      @app.server = http.createServer @app.callback()
+
+    @app.server.listen port, -> console.log "#{appName} web server started"
 
   ###*
    * @function Set up internazionalization
@@ -226,6 +247,8 @@ class KoaServer
     @setupSession()
     @setupI18n()
     @setupBody()
+    @setupHttp()
+    @setupSockets()
     @setupWeb()
     @setupPostMiddlewares()
     @setupRouting()
