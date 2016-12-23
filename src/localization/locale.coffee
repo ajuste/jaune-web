@@ -91,9 +91,10 @@ class Manager
   ###*
    * @function Get string resource
    * @param    {String} key The key
+   * @param    {Object} [placeholders] The placeholders
    * @param    {Boolean} asObject As object tree
   ###
-  getStringResource: (key, asObject) -> i18n.t key, returnObjectTrees: yes
+  getStringResource: (key, asObject, placeholders) -> i18n.t key, Object.assign returnObjectTrees: yes, placeholders
 
   getCountryLocation: (countryCode) ->
     CountryLocations[countryCode.toUpperCase()] || CountryLocations.Default;

@@ -52,8 +52,6 @@ resolveLocalization = (page, settings, data) ->
   format  = settings.localization.format ? 'array'
   {keys, title} = pageLocalization if pageLocalization?
 
-  debugger
-
   # add default values
   clientLoc = getDefaultLocalization page, settings, localeManager
 
