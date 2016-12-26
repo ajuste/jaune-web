@@ -94,7 +94,10 @@ class Manager
    * @param    {Object} [placeholders] The placeholders
    * @param    {Boolean} asObject As object tree
   ###
-  getStringResource: (key, asObject, placeholders) -> i18n.t key, Object.assign returnObjectTrees: yes, placeholders
+  getStringResource: (key, returnObjectTrees, placeholders) ->
+    console.log placeholders
+    debugger
+    i18n.t key, Object.assign {returnObjectTrees}, placeholders
 
   getCountryLocation: (countryCode) ->
     CountryLocations[countryCode.toUpperCase()] || CountryLocations.Default;

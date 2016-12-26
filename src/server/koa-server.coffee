@@ -183,9 +183,7 @@ class KoaServer
         httpUtil.setCookieValue this, 'locale', locale.locale, '1year'
       yield next
 
-    I18n.init
-      fallbackLng: @localeSettings.defaultLanguage,
-      debug : @localeSettings.debug
+    I18n.init @localeSettings
 
   ###*
    * @function Set up routing
