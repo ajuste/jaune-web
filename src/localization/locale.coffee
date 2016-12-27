@@ -95,8 +95,6 @@ class Manager
    * @param    {Boolean} asObject As object tree
   ###
   getStringResource: (key, returnObjectTrees, placeholders) ->
-    console.log placeholders
-    debugger
     i18n.t key, Object.assign {returnObjectTrees}, placeholders
 
   getCountryLocation: (countryCode) ->
