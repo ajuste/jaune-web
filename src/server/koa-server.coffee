@@ -40,7 +40,6 @@ class KoaServer
     @errorSettings  = @env.getEnvProperty ConfigErrorSection
 
     @app = koa();
-    @setup();
 
   ###*
    * @function Set up session

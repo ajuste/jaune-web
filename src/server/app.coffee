@@ -68,6 +68,8 @@ class App
   startServer: ->
     throw new Erro 'Already started' if (@server)
     @server = new KoaApp @env, @engine
+    @server.initSettings?.context? {app: @server, @engine}
+    @server.setup()
 
   ###*
    * @function Unload application
