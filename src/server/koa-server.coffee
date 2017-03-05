@@ -178,6 +178,7 @@ class KoaServer
       if locale?
         locale = yield localeManager.setLocale locale
         @session.locale = locale if @session
+        @locale = locale
 
         httpUtil.setCookieValue this, 'locale', locale.locale, '1year'
       yield next
