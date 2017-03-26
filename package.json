@@ -4,9 +4,9 @@
   "dependencies": {
     "co": "^4.6.0",
     "i18next": "=1.7.x",
-    "jaune-engine": "=0.0.x",
+    "jaune-engine": "git+ssh://github.com/ajuste/jaune-engine.git#master",
     "jaune-env": "=0.0.x",
-    "jaune-fs": "=0.0.x",
+    "jaune-fs": "git+ssh://github.com/ajuste/jaune-fs.git#master",
     "jaune-util": "=0.0.x",
     "koa": "^1.1.2",
     "koa-body": "^1.2.1",
