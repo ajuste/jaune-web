@@ -3,43 +3,46 @@
   "description": "jaune-web",
   "dependencies": {
     "co": "^4.6.0",
-    "express": "=3.4.x",
-    "gm": "=1.9.x",
     "i18next": "=1.7.x",
-    "iconv": "=2.1.x",
-    "jaune-engine": "=0.0.x",
+    "jaune-engine": "~1.0.x",
     "jaune-env": "=0.0.x",
-    "jaune-fs": "=0.0.x",
+    "jaune-fs": "~0.0.x",
     "jaune-util": "=0.0.x",
     "koa": "^1.1.2",
     "koa-body": "^1.2.1",
     "koa-i18n": "^1.1.0",
-    "koa-jade": "^1.1.0",
     "koa-locale": "^1.0.0",
     "koa-logger": "^1.3.0",
     "koa-routing": "^1.3.1",
     "koa-send": "^1.3.1",
     "koa-session": "^3.3.1",
     "lodash": "^3.10.1",
-    "node-uuid": "=1.4.x",
-    "q": "^1.2.1",
-    "request": "=2.33.x",
-    "string": "=1.5.x"
+    "q": "^1.2.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "assert": "^1.3.0",
+    "coffee-script": "^1.12.5",
+    "coffeelint": "^1.16.0",
+    "coveralls": "^2.13.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^2.4.5",
+    "mock-require": "^2.0.2"
+  },
   "main": "index.js",
   "name": "jaune-web",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ajuste/jaune-web.git"
   },
-  "version": "0.0.3",
+  "version": "1.0.0",
   "directories": {
     "test": "test"
   },
-  "engine": "node >= 0.12.x",
+  "engine": "node >= 4.1.2",
   "scripts": {
-    "test": "mocha ./test/*"
+    "test": "make test",
+    "prepublish": "make compile",
+    "cover": "make cover"
   },
   "bugs": {
     "url": "https://github.com/ajuste/jaune-web/issues"
