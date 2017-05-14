@@ -34,7 +34,7 @@
     "type": "git",
     "url": "git+https://github.com/ajuste/jaune-web.git"
   },
-  "version": "0.0.4",
+  "version": "1.0.0",
   "directories": {
     "test": "test"
   },
