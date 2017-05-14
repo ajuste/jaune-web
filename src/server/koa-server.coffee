@@ -39,14 +39,17 @@ class KoaServer
     @localeSettings = @env.getEnvProperty ConfigLocaleSection
     @errorSettings  = @env.getEnvProperty ConfigErrorSection
 
-    @app = koa();
+    @app = koa()
 
   ###*
    * @function Set up session
   ###
   setupSession: ->
 
-    {enabled, store, storeArgs} = @httpSettings?.session if @httpSettings?.session?
+    enabled = store = storeArgs = null
+
+    if @httpSettings?.session?
+      {enabled, store, storeArgs} = @httpSettings?.session
 
     return unless enabled is yes
 
@@ -97,14 +100,18 @@ class KoaServer
   ###
   setupBody: ->
 
-    {parse, multipart, strict, uploadPath} = @httpSettings.body if @httpSettings?.body?
+    parse = multipart = strict = uploadPath = null
+
+    if @httpSettings?.body?
+      {parse, multipart, strict, uploadPath} = @httpSettings.body
 
     return unless parse
 
     koaBody = require 'koa-body'
     settings = {multipart, strict}
 
-    extend settings, formidable: uploadDir: uploadPath if multipart and uploadPath
+    if multipart and uploadPath
+      extend settings, formidable: uploadDir: uploadPath
 
     @app.use koaBody settings
 
@@ -117,7 +124,8 @@ class KoaServer
 
     return unless sockets
 
-    @engine.sockets = new (require('koa-socket'))() #needs to be installed by client
+    #needs to be installed by client
+    @engine.sockets = new (require('koa-socket'))()
     @engine.sockets.attach @app
 
   ###*
@@ -164,7 +172,7 @@ class KoaServer
 
     koaLocale = require 'koa-locale'
     httpUtil = @engine.Http.Util
-    localeManager = @engine.Locale.Manager;
+    localeManager = @engine.Locale.Manager
 
     koaLocale @app
 
@@ -222,7 +230,7 @@ class KoaServer
     @app.use (next) ->
 
       try
-        yield next;
+        yield next
 
       catch error
 

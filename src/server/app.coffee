@@ -54,7 +54,8 @@ class App
   getHandlers: -> @handlers
 
   ###*
-   * @function Parses arguments from command line that are directed to this class.
+   * @function Parses arguments from command line that are directed to
+   * this class.
   ###
   parseArguments: ->
     for arg in process.argv

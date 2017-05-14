@@ -98,7 +98,7 @@ class Manager
     i18n.t key, Object.assign {returnObjectTrees}, placeholders
 
   getCountryLocation: (countryCode) ->
-    CountryLocations[countryCode.toUpperCase()] || CountryLocations.Default;
+    CountryLocations[countryCode.toUpperCase()] || CountryLocations.Default
 
   translateEnum: (enumeration) ->
 
@@ -112,10 +112,14 @@ class Manager
     result
 
   sameOrValidLanguage: (lang) ->
-    if lang in @settings.supportedLanguages then lang else @settings.defaultLanguage
+    return lang if lang in @settings.supportedLanguages
+    @settings.defaultLanguage
 
   sameOrValidCountry: (country) ->
-    if country in @settings.supportedCountries then country else @settings.defaultCountry
+    if country in @settings.supportedCountries
+      country
+    else
+      @settings.defaultCountry
 
   setLocale: (locale) ->
     locale = @getLocale locale

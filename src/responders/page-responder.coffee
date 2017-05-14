@@ -18,10 +18,10 @@ lodash = require 'lodash'
 PagesConfigSection = 'jaune.pages'
 
 # Generic error for 404
-GenericPage404     = 'notFound'
+GenericPage404 = 'notFound'
 
 # Generic error for 500
-GenericPage500     = 'error'
+GenericPage500 = 'error'
 
 getDefaultLocalization = (page, settings, localeManager)->
 
@@ -41,7 +41,7 @@ getDefaultLocalization = (page, settings, localeManager)->
 
 resolveLocalization = (page, settings, data) ->
 
-  localeManager = @jaune.engine().Locale.Manager;
+  localeManager = @jaune.engine().Locale.Manager
   localizations = export: {}
   {localization} = settings
   pageLocalization = page.localization
@@ -56,11 +56,14 @@ resolveLocalization = (page, settings, data) ->
   clientLoc = getDefaultLocalization page, settings, localeManager
 
   # add page's specific localization
-  localizations.title = localeManager.getStringResource pageLocalization.title if title?
+  if title?
+    localizations.title = localeManager.getStringResource(
+      pageLocalization.title)
 
   if keys?
     for key of pageLocalization.keys
-      clientLoc.push {key, value : localeManager.getStringResource page.localization.keys[key], true}
+      clientLoc.push {key, value: localeManager.getStringResource(
+        page.localization.keys[key], yes)}
 
   switch format
 
@@ -68,11 +71,13 @@ resolveLocalization = (page, settings, data) ->
 
       result = {}
       result[key] = value for {key, value} in clientLoc
-      localizations[localization.property] = localizations.export[localization.property] = result
+      localizations[localization.property] =
+        localizations.export[localization.property] = result
 
     else
 
-      localizations[localization.property] = localizations.export[localization.property] = localizations
+      localizations[localization.property] =
+        localizations.export[localization.property] = localizations
 
   localizations
 
@@ -90,7 +95,9 @@ splitIntoChunks = (chunkSize, data = export: {}) ->
 resolvePageData = (page, settings, data) ->
 
   {splitDataIntoChunks} = settings
-  data = extend data ? {}, @_jaune_web_responder_global if @_jaune_web_responder_global?
+
+  if @_jaune_web_responder_global?
+    data = extend data ? {}, @_jaune_web_responder_global
 
   # localization
   defaultsDeep data, resolveLocalization.call(this, page, settings)
@@ -120,13 +127,15 @@ send = (name, opts) ->
 * @function Respond with not found
 ###
 sendNotFound = (opts) ->
-  yield render(this, getGenericPageSettings(this, GenericPage404), opts?.result)
+  yield render(this,
+    getGenericPageSettings(this, GenericPage404), opts?.result)
 
 ###*
 * @function Respond with error
 ###
 sendError = (err, message) ->
-  yield render(this, getGenericPageSettings(this, GenericPage500), {message, err});
+  yield render(this,
+    getGenericPageSettings(this, GenericPage500), {message, err})
 
 getGenericPageSettings = (ctx, name) ->
   settings = ctx.jaune.engine().Environment.getEnvProperty PagesConfigSection
@@ -143,7 +152,7 @@ extendGlobalData = (data) ->
 
 render = (ctx, page, data) ->
 
-  httpResponder = ctx.jaune.responder.http;
+  httpResponder = ctx.jaune.responder.http
 
   return httpResponder.notFound.call ctx unless page
 

@@ -43,7 +43,9 @@ sendData = (opts = {}) ->
         return http.unauthorized.call this
 
   # check if NotFound must be sent on no data
-  return http.notFound.call this if opts.sendNotFoundOnNoData is yes and not dataAvailable
+  if opts.sendNotFoundOnNoData is yes and not dataAvailable
+    return http.notFound.call this
+
   @body = data
   yield {}
 
@@ -56,19 +58,24 @@ sendError = (err) ->
   engine = @jaune.engine()
   isArgumentError = err instanceof engine.Error.ArgumentError
   isCodedError = err instanceof engine.Error.UnhandledError
-  util = engine.Http.Util;
-  errorManager = engine.Error.Manager;
+  util = engine.Http.Util
+  errorManager = engine.Error.Manager
   logger = @logger
   loggerArgs = @loggerArgs
   code = if isArgumentError then HttpCode.BadRequest else 0
 
   unless code
-    code = if isCodedError and err.code then  err.code else HttpCode.InternalServerError
+    code =
+      if isCodedError and err.code
+        err.code
+      else
+        HttpCode.InternalServerError
 
   err = errorManager.asUnhandledError err # extend with more data
 
   if logger? and loggerArgs?
-    yield errorManager.logErrorOnUnhandledError err, logger, extend loggerArgs, message: err
+    yield errorManager.logErrorOnUnhandledError err, logger, extend(
+      loggerArgs, message: err)
 
   util.endWithCode this, code, if isCodedError then err.message else null
 
